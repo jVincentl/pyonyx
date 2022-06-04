@@ -7,7 +7,7 @@ div.innerHTML = str(H.pre(H.code("""import js
 ... div = js.document.createElement('div')
 ... div = js.document.createElement('div')
 ... div.style.float='right'
-"""))
+""")))
 
 
 from pyodide import open_url
