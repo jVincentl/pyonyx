@@ -2,6 +2,11 @@ import micropip
 await micropip.install('pyno')
 
 from pyno import HTML as H
+import js 
+
+div = js.document.createElement("div")
+div.innerHTML = "<h1>This element was created from Python</h1>"
+js.document.body.prepend(div)
 
 div.innerHTML = str(H.pre(H.code("""import js
 ... div = js.document.createElement('div')
@@ -10,9 +15,21 @@ div.innerHTML = str(H.pre(H.code("""import js
 """)))
 
 
+
+async def aexec(code):
+    exec(
+        f'async def __ex(): ' +
+        ''.join(f'\n {l}' for l in code.split('\n'))
+    )
+
+    return await locals()['__ex']()
+
+
 from pyodide import open_url
 url = "https://raw.githubusercontent.com/jVincentl/pyonyx/main/main.py"
 
 content = open_url(url).read()
 
-print(concent)
+# exec('async def __ex():\n    ' +content.replace('\n', '\n    ')); await __ex()
+
+print(content)
