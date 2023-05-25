@@ -23,11 +23,10 @@ async def aexec(code):
         f'async def __ex(): ' +
         ''.join(f'\n {l}' for l in code.split('\n'))
     )
-
     return await locals()['__ex']()
 
 
-from pyodide import open_url
+from pyodide.http import open_url
 url = "https://raw.githubusercontent.com/jVincentl/pyonyx/main/main.py"
 
 content = open_url(url).read()
