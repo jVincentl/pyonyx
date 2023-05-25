@@ -17,20 +17,21 @@ div.innerHTML = str(H.pre(H.code("""import js
 """)))
 
 
-
-async def aexec(code):
-    exec(
-        f'async def __ex(): ' +
-        ''.join(f'\n {l}' for l in code.split('\n'))
-    )
-    return await locals()['__ex']()
-
+async def aexec(code, **kwargs):
+    var_locals = {}
+    var_globals = globals().copy()
+    args = ", ".join(list(kwargs.keys()))
+    exec(f"async def func({args}):\n    " + code.replace("\n", "\n    "), {}, var_locals)
+    result = await var_locals["func"](**kwargs)
+    try:
+        globals().clear()
+    finally:
+        globals().update(**var_globals)
+    return result
 
 from pyodide.http import open_url
 url = "https://raw.githubusercontent.com/jVincentl/pyonyx/main/main.py"
 
 content = open_url(url).read()
-
-# exec('async def __ex():\n    ' +content.replace('\n', '\n    ')); await __ex()
 
 print(content)
